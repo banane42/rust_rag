@@ -1,0 +1,5 @@
+ARMIES
+Each player in a game of Warhammer 40,000 commands an army of Citadel miniatures, hereafter referred to as models. The mission you have selected will guide you as to how big your army should be.
+
+SUMMARY
+* Army: All of the models under your command.
