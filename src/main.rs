@@ -1,4 +1,4 @@
-use std::{error::Error, fs, path::Path};
+use std::{error::Error, fs::{self, read_to_string}, path::Path};
 
 use document::Document;
 use ollama_rs::{Ollama, generation::completion::request::GenerationRequest};
@@ -16,6 +16,10 @@ fn main() {
 
     corpus.build();
 
+    // let doc_i = corpus.query(read_to_string(Path::new("./corpus/core_concepts_missions.txt")).unwrap());
+    let doc_i = corpus.query("What is the game of Warhamer 40,000?".to_string());
+    println!("Query Doc: {:?}", corpus.get_doc_path(doc_i));
+
     // let intro_path = Path::new("./corpus/introduction.txt");
     // let intro_bow = bow::document_to_bow(intro_path).unwrap();
     // println!("{:#?}", intro_bow);
@@ -30,7 +34,7 @@ fn read_docs(corpus: &mut Corpus) -> Result<(), Box<dyn Error>> {
         if entry.path().is_file() && entry.path().extension().map_or(false, |ext| ext == "txt") {
             println!("Creating Document {:?}", entry.path());
             let bow = bow::document_to_bow(entry.path().as_path())?;
-            let doc = Document::new(bow);
+            let doc = Document::new(entry.path(), bow);
             corpus.push_document(doc);
         }
     }
